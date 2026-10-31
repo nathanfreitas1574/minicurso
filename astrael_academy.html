@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#101a17" />
+  <title>Astrael Academy | Gestão Educacional</title>
+  <style>
+    :root {
+      --bg: #f4f6f5; --surface: #fff; --ink: #17231f; --muted: #718078;
+      --line: #e5ebe7; --green: #176b4b; --green-dark: #0d3b2e;
+      --green-soft: #e8f3ed; --amber: #f4b740; --red: #c94b4b;
+      --sidebar: #10251e; --sidebar-muted: #a9bbb2;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--ink); }
+    button, input, select { font: inherit; }
+    .app { min-height: 100vh; display: grid; grid-template-columns: 252px minmax(0,1fr); }
+    aside { background: var(--sidebar); color: white; padding: 25px 16px; display:flex; flex-direction:column; gap:28px; }
+    .brand { display:flex; align-items:center; gap:11px; padding:0 10px; }
+    .brand-mark { width:38px; height:38px; border-radius:12px; display:grid; place-items:center; background:#d7eee1; color:var(--green-dark); font-weight:900; font-size:20px; }
+    .brand-name { font-size:16px; font-weight:800; letter-spacing:.2px; }
+    .brand-sub { color:#a9bbb2; font-size:10px; margin-top:3px; letter-spacing:1.2px; text-transform:uppercase; }
+    .nav-label { color:#7f9a8d; font-size:10px; letter-spacing:1.5px; font-weight:700; padding:0 12px; margin-bottom:8px; }
+    nav { display:grid; gap:5px; }
+    .nav-item { border:0; color:var(--sidebar-muted); background:transparent; padding:11px 12px; display:flex; align-items:center; gap:12px; border-radius:10px; text-align:left; cursor:pointer; font-size:13px; width:100%; transition:.15s; }
+    .nav-item:hover { background:#1b382d; color:white; }
+    .nav-item.active { background:#24513e; color:white; box-shadow:inset 3px 0 #82c99e; }
+    .nav-icon { width:20px; text-align:center; font-size:16px; }
+    .side-bottom { margin-top:auto; border-top:1px solid #294137; padding:18px 10px 0; color:#9bb0a5; font-size:11px; line-height:1.6; }
+    main { min-width:0; }
+    header { height:76px; background:var(--surface); border-bottom:1px solid var(--line); display:flex; align-items:center; justify-content:space-between; padding:0 34px; gap:20px; }
+    .crumb { color:var(--muted); font-size:12px; }
+    .crumb strong { color:var(--ink); font-weight:700; }
+    .header-right { display:flex; align-items:center; gap:18px; }
+    .unit { border:1px solid var(--line); padding:9px 12px; border-radius:9px; color:#516159; font-size:12px; background:white; }
+    .avatar { width:36px; height:36px; border-radius:50%; background:#dcece2; color:var(--green-dark); display:grid; place-items:center; font-size:12px; font-weight:800; }
+    .content { padding:30px 34px 42px; max-width:1600px; margin:auto; }
+    .page-head { display:flex; align-items:flex-start; justify-content:space-between; gap:20px; margin-bottom:25px; }
+    h1 { font-size:25px; margin:0 0 7px; letter-spacing:-.6px; }
+    .subtitle { color:var(--muted); font-size:13px; margin:0; }
+    .primary { background:var(--green); color:white; border:0; border-radius:9px; padding:11px 16px; font-size:12px; font-weight:700; cursor:pointer; box-shadow:0 3px 8px #176b4b20; }
+    .primary:hover { background:#10583d; }
+    .secondary { border:1px solid var(--line); background:white; color:#425249; border-radius:9px; padding:10px 14px; font-size:12px; cursor:pointer; }
+    .stats { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:16px; margin-bottom:20px; }
+    .card { background:var(--surface); border:1px solid var(--line); border-radius:13px; padding:19px; box-shadow:0 2px 8px #18392a05; }
+    .stat-top { display:flex; justify-content:space-between; align-items:center; color:var(--muted); font-size:12px; }
+    .stat-icon { width:34px; height:34px; display:grid; place-items:center; border-radius:10px; background:var(--green-soft); color:var(--green); font-size:17px; }
+    .stat-value { font-size:27px; font-weight:800; margin:14px 0 5px; letter-spacing:-1px; }
+    .stat-note { color:var(--muted); font-size:11px; }
+    .positive { color:var(--green); font-weight:700; }
+    .dashboard-grid { display:grid; grid-template-columns:minmax(0,1.55fr) minmax(280px,1fr); gap:18px; }
+    .card-title { font-size:14px; font-weight:750; margin:0; }
+    .card-caption { color:var(--muted); font-size:11px; margin-top:5px; }
+    .chart-wrap { height:230px; margin-top:22px; display:flex; align-items:end; gap:14px; padding:10px 5px 0; border-bottom:1px solid var(--line); background:repeating-linear-gradient(to bottom, transparent 0, transparent 55px, #edf1ee 56px); }
+    .bar-group { flex:1; height:100%; display:flex; align-items:end; justify-content:center; gap:5px; position:relative; }
+    .bar { width: min(25px,40%); border-radius:5px 5px 0 0; background:#9bcbb0; }
+    .bar.dark { background:var(--green); }
+    .month { position:absolute; bottom:-23px; color:var(--muted); font-size:10px; }
+    .legend { display:flex; gap:16px; margin-top:35px; color:var(--muted); font-size:10px; }
+    .dot { width:8px; height:8px; border-radius:50%; display:inline-block; margin-right:5px; background:#9bcbb0; }
+    .dot.dark { background:var(--green); }
+    .activity { display:grid; gap:17px; margin-top:20px; }
+    .activity-item { display:flex; gap:11px; align-items:flex-start; }
+    .activity-icon { width:32px; height:32px; flex:0 0 32px; border-radius:9px; background:#eef5f0; display:grid; place-items:center; }
+    .activity-text { font-size:11px; line-height:1.5; }
+    .activity-text strong { display:block; font-size:12px; margin-bottom:2px; }
+    .activity-time { color:var(--muted); font-size:10px; }
+    .table-card { margin-top:18px; padding:0; overflow:hidden; }
+    .table-head { padding:19px 20px; display:flex; justify-content:space-between; align-items:center; gap:15px; }
+    .table-wrap { overflow-x:auto; }
+    table { width:100%; border-collapse:collapse; white-space:nowrap; }
+    th { text-align:left; color:var(--muted); font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.7px; background:#fafcfb; padding:12px 20px; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+    td { padding:14px 20px; border-bottom:1px solid #edf1ee; font-size:11px; color:#435149; }
+    td strong { color:var(--ink); font-size:11px; }
+    .pill { padding:5px 9px; border-radius:30px; font-size:10px; font-weight:700; background:#e8f4ec; color:#26734d; }
+    .pill.warn { background:#fff4dd; color:#a36b0c; }
+    .toolbar { display:flex; gap:10px; margin-bottom:16px; }
+    .search { border:1px solid var(--line); border-radius:9px; padding:10px 13px; min-width:240px; background:white; font-size:12px; outline:none; }
+    .search:focus { border-color:#8bb99d; box-shadow:0 0 0 3px #176b4b12; }
+    .empty-note { padding:38px; text-align:center; color:var(--muted); font-size:12px; }
+    .toast { position:fixed; right:24px; bottom:24px; background:#10251e; color:white; padding:13px 18px; border-radius:10px; font-size:12px; box-shadow:0 8px 30px #0002; display:none; }
+    footer { color:#91a097; font-size:10px; text-align:center; padding:25px 10px 0; }
+    @media (max-width:1050px) { .app { grid-template-columns:220px minmax(0,1fr); } .content {padding:25px 22px;} header{padding:0 22px;} .stats{grid-template-columns:repeat(2,minmax(0,1fr));} }
+    @media (max-width:720px) {
+      .app {grid-template-columns:1fr;} aside {padding:13px; gap:12px;} .brand{padding:0 5px;} .brand-mark{width:32px;height:32px;}
+      .nav-label,.side-bottom {display:none;} nav {display:flex; overflow-x:auto; gap:5px; padding-bottom:3px;} .nav-item{width:auto; flex:0 0 auto; padding:9px 11px;} .nav-item span:last-child{display:none;}
+      header{height:60px;padding:0 16px;} .unit{display:none;} .content{padding:22px 15px;} .page-head{align-items:flex-start;} h1{font-size:22px;}
+      .stats{gap:10px;} .card{padding:15px;} .stat-value{font-size:23px;} .dashboard-grid{grid-template-columns:1fr;} .search{min-width:0;width:100%;}
+    }
+    @media (max-width:420px) { .stats{grid-template-columns:1fr 1fr;} .stat-top{font-size:10px;} .page-head .primary{padding:10px;font-size:10px;} }
+  </style>
+</head>
+<body>
+<div class="app">
+  <aside>
+    <div class="brand">
+      <div class="brand-mark">A</div>
+      <div><div class="brand-name">ASTRAEL ACADEMY</div><div class="brand-sub">Gestão educacional</div></div>
+    </div>
+    <div>
+      <div class="nav-label">MENU PRINCIPAL</div>
+      <nav id="navigation">
+        <button class="nav-item active" data-page="Dashboard"><span class="nav-icon">▦</span><span>Dashboard</span></button>
+        <button class="nav-item" data-page="Alunos"><span class="nav-icon">♙</span><span>Alunos</span></button>
+        <button class="nav-item" data-page="Professores"><span class="nav-icon">♟</span><span>Professores</span></button>
+        <button class="nav-item" data-page="Cursos"><span class="nav-icon">▤</span><span>Cursos</span></button>
+        <button class="nav-item" data-page="Turmas"><span class="nav-icon">▦</span><span>Turmas</span></button>
+        <button class="nav-item" data-page="Matrículas"><span class="nav-icon">✚</span><span>Matrículas</span></button>
+        <button class="nav-item" data-page="Frequência"><span class="nav-icon">✓</span><span>Frequência</span></button>
+        <button class="nav-item" data-page="Avaliações"><span class="nav-icon">▧</span><span>Avaliações</span></button>
+        <button class="nav-item" data-page="Certificados"><span class="nav-icon">♜</span><span>Certificados</span></button>
+        <button class="nav-item" data-page="Relatórios"><span class="nav-icon">▥</span><span>Relatórios</span></button>
+        <button class="nav-item" data-page="Configurações"><span class="nav-icon">⚙</span><span>Configurações</span></button>
+      </nav>
+    </div>
+    <div class="side-bottom">ASTRAEL TECHNOLOGY<br>Produto Astrael · SENAI<br>Versão demonstrativa 1.0</div>
+  </aside>
+  <main>
+    <header>
+      <div class="crumb">Astrael Academy <span style="color:#b8c4bd"> / </span> <strong id="breadcrumb">Dashboard</strong></div>
+      <div class="header-right"><div class="unit">⌂ &nbsp; Unidade SENAI</div><div class="avatar">AD</div></div>
+    </header>
+    <section class="content" id="content"></section>
+  </main>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+  const students = [
+    {name:"Ana Clara Oliveira", id:"2026.00124", course:"Desenvolvimento de Sistemas", status:"Ativo"},
+    {name:"Pedro Henrique Santos", id:"2026.00125", course:"Mecânica Industrial", status:"Ativo"},
+    {name:"Mariana Costa Ribeiro", id:"2026.00126", course:"Administração", status:"Pendente"},
+    {name:"Lucas Gabriel Ferreira", id:"2026.00127", course:"Desenvolvimento de Sistemas", status:"Ativo"},
+    {name:"Beatriz Almeida Souza", id:"2026.00128", course:"Eletrotécnica", status:"Ativo"}
+  ];
+  const modules = {
+    "Alunos": {desc:"Gerencie os alunos cadastrados na unidade.", action:"Novo aluno", cols:["Aluno","Matrícula","Curso","Situação"], rows:students.map(s=>[s.name,s.id,s.course,s.status])},
+    "Professores": {desc:"Cadastro e gestão do corpo docente.", action:"Novo professor", cols:["Professor","Especialidade","E-mail","Situação"], rows:[["Carlos Eduardo Lima","Tecnologia da Informação","carlos.lima@senai.br","Ativo"],["Fernanda Martins","Gestão e Negócios","fernanda.martins@senai.br","Ativo"],["Roberto Alves","Mecânica Industrial","roberto.alves@senai.br","Ativo"]]},
+    "Cursos": {desc:"Catálogo de cursos oferecidos pela unidade.", action:"Novo curso", cols:["Curso","Carga horária","Modalidade","Situação"], rows:[["Desenvolvimento de Sistemas","1.200 h","Presencial","Ativo"],["Mecânica Industrial","1.600 h","Presencial","Ativo"],["Administração","800 h","Híbrido","Ativo"],["Eletrotécnica","1.200 h","Presencial","Ativo"]]},
+    "Turmas": {desc:"Organize turmas, horários, salas e docentes.", action:"Nova turma", cols:["Turma","Curso","Turno","Vagas"], rows:[["DS-2026-A","Desenvolvimento de Sistemas","Noturno","28 / 30"],["MI-2026-B","Mecânica Industrial","Matutino","24 / 25"],["ADM-2026-A","Administração","Vespertino","19 / 25"]]},
+    "Matrículas": {desc:"Acompanhe as matrículas e seus status.", action:"Nova matrícula", cols:["Aluno","Curso","Data","Situação"], rows:[["Ana Clara Oliveira","Desenvolvimento de Sistemas","10/01/2026","Confirmada"],["Mariana Costa Ribeiro","Administração","12/01/2026","Pendente"],["Lucas Gabriel Ferreira","Desenvolvimento de Sistemas","15/01/2026","Confirmada"]]},
+    "Frequência": {desc:"Controle de presença e faltas por turma.", action:"Registrar frequência", cols:["Turma","Data","Aula","Presença"], rows:[["DS-2026-A","28/10/2026","Programação Web","92%"],["MI-2026-B","28/10/2026","Processos de Fabricação","88%"],["ADM-2026-A","29/10/2026","Gestão de Pessoas","96%"]]},
+    "Avaliações": {desc:"Notas, avaliações e desempenho dos alunos.", action:"Nova avaliação", cols:["Avaliação","Turma","Data","Status"], rows:[["Lógica de Programação","DS-2026-A","25/10/2026","Corrigida"],["Projeto Integrador","DS-2026-A","30/10/2026","Em andamento"],["Metrologia","MI-2026-B","27/10/2026","Corrigida"]]},
+    "Certificados": {desc:"Emissão e consulta de certificados.", action:"Emitir certificado", cols:["Aluno","Curso","Conclusão","Status"], rows:[["João Pedro Mendes","Excel Profissional","20/10/2026","Disponível"],["Camila Nunes Rocha","Assistente Administrativo","18/10/2026","Disponível"]]},
+    "Relatórios": {desc:"Indicadores acadêmicos e relatórios gerenciais.", action:"Exportar relatório", cols:["Relatório","Período","Atualização","Formato"], rows:[["Alunos matriculados","Outubro/2026","Hoje","PDF / CSV"],["Frequência por turma","Outubro/2026","Hoje","PDF / CSV"],["Desempenho acadêmico","3º trimestre","Ontem","PDF / CSV"]]},
+    "Configurações": {desc:"Preferências da unidade, usuários e permissões.", action:"Salvar configurações", cols:["Configuração","Valor","Status"], rows:[["Instituição","SENAI - Unidade","Ativo"],["Idioma","Português (Brasil)","Ativo"],["Fuso horário","America/Cuiaba","Ativo"],["Controle de acesso","Por perfil de usuário","Ativo"]]}
+  };
+  const icons = {"Alunos":"♙","Professores":"♟","Cursos":"▤","Turmas":"▦","Matrículas":"✚","Frequência":"✓","Avaliações":"▧","Certificados":"♜","Relatórios":"▥","Configurações":"⚙"};
+  const content = document.getElementById("content");
+  function toast(message) { const el=document.getElementById("toast"); el.textContent=message; el.style.display="block"; setTimeout(()=>el.style.display="none",2600); }
+  function dashboard() {
+    return `<div class="page-head"><div><h1>Visão geral</h1><p class="subtitle">Acompanhe os principais indicadores acadêmicos da unidade.</p></div><button class="primary" onclick="toast('Ação demonstrativa: conecte o backend para cadastrar dados.')">＋ &nbsp; Novo cadastro</button></div>
+    <div class="stats">
+      <div class="card"><div class="stat-top">Alunos ativos <span class="stat-icon">♙</span></div><div class="stat-value">1.284</div><div class="stat-note"><span class="positive">↑ 8,2%</span> em relação ao período anterior</div></div>
+      <div class="card"><div class="stat-top">Professores <span class="stat-icon">♟</span></div><div class="stat-value">48</div><div class="stat-note">Docentes cadastrados na unidade</div></div>
+      <div class="card"><div class="stat-top">Cursos ativos <span class="stat-icon">▤</span></div><div class="stat-value">32</div><div class="stat-note">Em diferentes modalidades</div></div>
+      <div class="card"><div class="stat-top">Turmas em andamento <span class="stat-icon">▦</span></div><div class="stat-value">56</div><div class="stat-note"><span class="positive">12</span> com início neste mês</div></div>
+    </div>
+    <div class="dashboard-grid">
+      <div class="card"><h3 class="card-title">Matrículas ao longo do ano</h3><div class="card-caption">Comparativo demonstrativo de matrículas por mês</div>
+        <div class="chart-wrap">${[["Jan",42,65],["Fev",55,73],["Mar",48,82],["Abr",67,90],["Mai",60,76],["Jun",72,94],["Jul",58,80],["Ago",78,98],["Set",69,88],["Out",84,100]].map(([m,a,b])=>`<div class="bar-group"><div class="bar" style="height:${a}%"></div><div class="bar dark" style="height:${b}%"></div><span class="month">${m}</span></div>`).join("")}</div>
+        <div class="legend"><span><i class="dot"></i> Ano anterior</span><span><i class="dot dark"></i> Ano atual</span></div>
+      </div>
+      <div class="card"><h3 class="card-title">Atividades recentes</h3><div class="card-caption">Últimas movimentações do sistema</div>
+        <div class="activity">
+          <div class="activity-item"><div class="activity-icon">♙</div><div class="activity-text"><strong>Nova matrícula registrada</strong>Ana Clara Oliveira · Desenvolvimento de Sistemas<div class="activity-time">Hoje, 09:42</div></div></div>
+          <div class="activity-item"><div class="activity-icon">✓</div><div class="activity-text"><strong>Frequência lançada</strong>Turma DS-2026-A · Programação Web<div class="activity-time">Hoje, 08:15</div></div></div>
+          <div class="activity-item"><div class="activity-icon">♜</div><div class="activity-text"><strong>Certificado emitido</strong>Excel Profissional · João Pedro Mendes<div class="activity-time">Ontem, 16:30</div></div></div>
+          <div class="activity-item"><div class="activity-icon">▤</div><div class="activity-text"><strong>Novo curso cadastrado</strong>Introdução à Inteligência Artificial<div class="activity-time">Ontem, 14:05</div></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="card table-card"><div class="table-head"><div><h3 class="card-title">Turmas em destaque</h3><div class="card-caption">Resumo das turmas com maior movimentação</div></div><button class="secondary" onclick="navigate('Turmas')">Ver todas</button></div>
+      <div class="table-wrap"><table><thead><tr><th>Turma</th><th>Curso</th><th>Turno</th><th>Ocupação</th><th>Situação</th></tr></thead><tbody>
+      <tr><td><strong>DS-2026-A</strong></td><td>Desenvolvimento de Sistemas</td><td>Noturno</td><td>28 / 30</td><td><span class="pill">Em andamento</span></td></tr>
+      <tr><td><strong>MI-2026-B</strong></td><td>Mecânica Industrial</td><td>Matutino</td><td>24 / 25</td><td><span class="pill">Em andamento</span></td></tr>
+      <tr><td><strong>ADM-2026-A</strong></td><td>Administração</td><td>Vespertino</td><td>19 / 25</td><td><span class="pill warn">Inscrições abertas</span></td></tr>
+      </tbody></table></div></div>
+    <footer>© 2026 Astrael Academy · Tecnologia para transformar a educação.</footer>`;
+  }
+  function modulePage(name) {
+    const mod=modules[name];
+    return `<div class="page-head"><div><h1>${name}</h1><p class="subtitle">${mod.desc}</p></div><button class="primary" onclick="toast('Módulo demonstrativo: a integração com banco de dados ainda não foi configurada.')">＋ &nbsp; ${mod.action}</button></div>
+      <div class="toolbar"><input class="search" id="filter" placeholder="⌕  Buscar em ${name.toLowerCase()}..." oninput="filterRows()"><button class="secondary" onclick="toast('Filtros avançados estarão disponíveis na versão integrada.')">Filtros</button></div>
+      <div class="card table-card"><div class="table-wrap"><table><thead><tr>${mod.cols.map(c=>`<th>${c}</th>`).join("")}<th>Ações</th></tr></thead><tbody id="moduleRows">${mod.rows.map(row=>`<tr>${row.map((cell,i)=>`<td>${i===0?`<strong>${cell}</strong>`:cell.includes("Ativo")||cell.includes("Confirmada")||cell.includes("Disponível")||cell==="Corrigida"?`<span class="pill">${cell}</span>`:cell.includes("Pendente")||cell.includes("Em andamento")?`<span class="pill warn">${cell}</span>`:cell}</td>`).join("")}<td><button class="secondary" onclick="toast('A visualização detalhada será habilitada na versão conectada.')">Visualizar</button></td></tr>`).join("")}</tbody></table></div></div>
+      <footer>© 2026 Astrael Academy · Produto Astrael.</footer>`;
+  }
+  function navigate(page) {
+    document.querySelectorAll(".nav-item").forEach(b=>b.classList.toggle("active",b.dataset.page===page));
+    document.getElementById("breadcrumb").textContent=page;
+    content.innerHTML=page==="Dashboard"?dashboard():modulePage(page);
+  }
+  function filterRows() {
+    const q=document.getElementById("filter").value.toLowerCase();
+    document.querySelectorAll("#moduleRows tr").forEach(row=>row.style.display=row.innerText.toLowerCase().includes(q)?"":"none");
+  }
+  document.getElementById("navigation").addEventListener("click",e=>{
+    const button=e.target.closest("[data-page]");
+    if(button) navigate(button.dataset.page);
+  });
+  navigate("Dashboard");
+</script>
+</body>
+</html>
